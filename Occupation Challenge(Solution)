@@ -1,0 +1,45 @@
+WITH cte1 as
+(SELECT 
+    ROW_NUMBER() OVER() AS rn,
+    CASE
+        WHEN Occupation = 'Doctor' THEN Name
+        ELSE NULL
+    END AS 'Doctor'
+FROM OCCUPATIONS
+ORDER BY Doctor IS NULL, Doctor ASC), 
+cte2 as
+(SELECT 
+    ROW_NUMBER() OVER() AS rn,
+    CASE
+        WHEN Occupation = 'Professor' THEN Name
+        ELSE NULL
+    END AS 'Professor'
+FROM OCCUPATIONS
+ORDER BY Professor IS NULL, Professor ASC),
+cte3 as
+(SELECT 
+    ROW_NUMBER() OVER() AS rn,
+    CASE
+        WHEN Occupation = 'Singer' THEN Name
+        ELSE NULL
+    END AS 'Singer'
+FROM OCCUPATIONS
+ORDER BY Singer IS NULL, Singer ASC),
+cte4 as
+(SELECT 
+    ROW_NUMBER() OVER() AS rn,
+    CASE
+        WHEN Occupation = 'Actor' THEN Name
+        ELSE NULL
+    END AS 'Actor'
+FROM OCCUPATIONS
+ORDER BY Actor IS NULL, Actor ASC)
+SELECT cte1.Doctor, cte2.Professor, cte3.Singer, cte4.Actor
+FROM cte1
+JOIN cte2
+USING(rn)
+JOIN cte3
+USING(rn)
+JOIN cte4
+USING(rn)
+LIMIT 7;
